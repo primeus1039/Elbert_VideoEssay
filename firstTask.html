@@ -18,11 +18,23 @@
         <li><h3>British Shirthair</h3></li>
     </ul>
     <h3>Comments</h3>
+    <div id="commentsContainer"></div>
     <p>name</p>
-    <input>
+    <input placeholder="your name">
     <p>comment</p>
-    <input>
+    <input placeholder="your comment">
     <button>Submit</button>
+
+    <script>
+        function insertComment (name, comment) {
+            const commentContainer = document.getElementById("commentsContainer")
+            commentContainer.innerHTML += `
+            <strong>${name}</strong>: ${comment} </br>
+            `
+        }
+        insertComment("Jason", "Cars are cool")
+        insertComment("Phong", "Where my bling at?")
+    </script>
         
 </body>
 </html>
