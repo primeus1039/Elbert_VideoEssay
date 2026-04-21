@@ -20,20 +20,31 @@
     <h3>Comments</h3>
     <div id="commentsContainer"></div>
     <p>name</p>
-    <input placeholder="your name">
+    <input placeholder="your name", id="inputName">
     <p>comment</p>
-    <input placeholder="your comment">
-    <button>Submit</button>
+    <input placeholder="your comment", id="inputComment">
+    <button id="submitButton">Submit</button>
 
     <script>
+        //------------------ variables
+        const commentContainer = document.getElementById("commentsContainer");
+        const getNameInput = document.getElementById("inputName");
+        const getCommentInput = document.getElementById("inputComment");
+        const getSubmitButton = document.getElementById("submitButton")
+        //------------------ functions
         function insertComment (name, comment) {
-            const commentContainer = document.getElementById("commentsContainer")
             commentContainer.innerHTML += `
             <strong>${name}</strong>: ${comment} </br>
-            `
-        }
-        insertComment("Jason", "Cars are cool")
-        insertComment("Phong", "Where my bling at?")
+            `}
+        function onSubmitButtonClicked () {
+            const name = getNameInput.value;
+            const comment = getCommentInput.value;
+            insertComment(name, comment);
+            getNameInput.value = "";
+            getCommentInput.value = "";
+        };
+        //------------------ execution
+        getSubmitButton.addEventListener("click", onSubmitButtonClicked)
     </script>
         
 </body>
