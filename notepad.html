@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotepadExercise</title>
+</head>
+<body>
+    <h1>Nayvine's Notepad</h1>
+    <button id="saveButton">Save</button>
+    <button id="loadButton">Load</button>
+    <button id="clearButton">Clear</button>
+    <hr/>
+    <textarea name="" , placeholder="Enter Notes", id="textArea", rows="20", cols="100"> </textarea>
+    
+    <script>
+        //------------ variables
+        const getSaveButton = document.getElementById("saveButton");
+        const getLoadButton = document.getElementById("loadButton");
+        const getClearButton = document.getElementById("clearButton");
+        const getTextArea = document.getElementById("textArea");
+        const dataKey = "storageKey"
+        //------------ functions
+        function saveLocalStorage () {
+            const currentText = getTextArea.value
+            localStorage.setItem(dataKey, currentText)
+        };
+        function loadLocalStorage () {
+            const loadText = localStorage.getItem(dataKey)
+            getTextArea.value = loadText
+        };
+        function clearLocalStorage () {
+            localStorage.removeItem(dataKey)
+            alert ("Clear")
+        };
+        //------------ executions
+        getSaveButton.addEventListener("click", saveLocalStorage);
+        getLoadButton.addEventListener("click", loadLocalStorage);
+        getClearButton.addEventListener("click", clearLocalStorage);
+    </script>
+</body>
+</html>
