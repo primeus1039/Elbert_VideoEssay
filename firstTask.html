@@ -25,63 +25,8 @@
     <input placeholder="your comment", id="inputComment">
     <button id="submitButton">Submit</button>
 
-    <script>
-        //------------------ variables
-        const dataKey = "comments";
-        let commentStorage = [];
-        const commentContainer = document.getElementById("commentsContainer");
-        const getNameInput = document.getElementById("inputName");
-        const getCommentInput = document.getElementById("inputComment");
-        const getSubmitButton = document.getElementById("submitButton");
-        //------------------ functions
-        function saveComments (comments) {
-            // stringify the comments for saving
-            const savedComment = JSON.stringify(comments);
-            // saves them to local storage
-            localStorage.setItem(dataKey, savedComment)
-        };
-        function loadComments () {
-            //get data using data key
-            const readData = localStorage.getItem(dataKey);
-            //checks for null/undefined values in dataKey (catches initial startup error)
-            if (readData != undefined || readData != null) {
-                // parse the data
-                const parsedData = JSON.parse(readData);
-                //return the parsed data
-                return parsedData
-            }
-            else {
-                return []
-            }
-        };
-        function insertComment (name, comment) {
-            commentContainer.innerHTML += `
-            <strong>${name}</strong>: ${comment} </br>
-            `};
-        function onSubmitButtonClicked () {
-            const name = getNameInput.value;
-            const comment = getCommentInput.value;
-            //saving the comments to comment storage array
-            commentStorage.push({name: name, message: comment});
-            //saves the array to local storage using saveComments
-            saveComments(commentStorage);
-            //updates the comments to innerHTML for display
-            insertComment(name, comment);
-            // resets the value of the input fields to an empty string
-            getNameInput.value = "";
-            getCommentInput.value = "";
-        };
-        //------------------ execution
-        getSubmitButton.addEventListener("click", onSubmitButtonClicked);
-        // updates comment storage with past comments using loadComments
-        commentStorage = loadComments()
-        //using for loop to print all the saved comments into innerHTML
-        for (let index = 0; index < commentStorage.length; index++) {
-            const currentComment = commentStorage[index];
-            insertComment(currentComment.name, currentComment.message)
-        }
-
-    </script>
+    <script src="./localStorage.js"></script>
+    <script src="./main.js"></script>
         
 </body>
 </html>
