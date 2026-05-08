@@ -13,10 +13,8 @@ function insertComment (name, comment) {
 function onSubmitButtonClicked () {
     const name = getNameInput.value;
     const comment = getCommentInput.value;
-    //saving the comments to comment storage array
-    commentStorage.push({name: name, message: comment});
-    //saves the array to local storage using saveComments
-    saveComments(commentStorage);
+    //saves the name and comment through Class function
+    dataManager.insertCommentAndSave(name, comment);
     //updates the comments to innerHTML for display
     insertComment(name, comment);
     // resets the value of the input fields to an empty string
@@ -24,9 +22,10 @@ function onSubmitButtonClicked () {
     getCommentInput.value = "";
 };
 //------------------ execution
+const dataManager = new Datamanager()
 getSubmitButton.addEventListener("click", onSubmitButtonClicked);
 // updates comment storage with past comments using loadComments
-commentStorage = loadComments()
+commentStorage = dataManager.getAllComments()
 //using for loop to print all the saved comments into innerHTML
 for (let index = 0; index < commentStorage.length; index++) {
     const currentComment = commentStorage[index];
