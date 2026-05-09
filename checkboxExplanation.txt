@@ -1,0 +1,69 @@
+attachCheckboxListeners() Explained Line by Line
+===============================================
+
+function attachCheckboxListeners() {
+    // Step 1: Find ALL checkboxes on the page
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    // Step 2: Loop through each checkbox
+    checkboxes.forEach(function(checkbox) {
+        
+        // Step 3: Add a "click handler" to each checkbox
+        checkbox.addEventListener('change', function() {
+            
+            // Step 4: When clicked, find the parent div
+            const parentDiv = checkbox.parentElement;
+            
+            // Step 5: Check if box was checked or unchecked
+            if (checkbox.checked) {
+                // If checked: update HTML to add checked="checked"
+                parentDiv.innerHTML = parentDiv.innerHTML.replace(
+                    '<input type="checkbox"/>',
+                    '<input type="checkbox" checked="checked"/>'
+                );
+            } else {
+                // If unchecked: remove the checked attribute
+                parentDiv.innerHTML = parentDiv.innerHTML.replace(
+                    'checked="checked"',
+                    ''
+                );
+            }
+            
+            // Step 6: Get the index of this item (e.g., "0", "1", "2")
+            const index = parentDiv.getAttribute('data-index');
+            
+            // Step 7: Update the cache array at that index with new HTML
+            dataManager.cache[index] = parentDiv.outerHTML;
+            
+            // Step 8: Save the updated cache to localStorage
+            localStorage.setItem(dataManager.key, JSON.stringify(dataManager.cache));
+        });
+    });
+}
+
+
+Visual Example
+==============
+
+Before clicking checkbox:
+<div data-index="0"><input type="checkbox"/>Buy milk</div>
+
+After clicking (checked):
+<div data-index="0"><input type="checkbox" checked="checked"/>Buy milk</div>
+
+After unclicking (unchecked):
+<div data-index="0"><input type="checkbox"/>Buy milk</div>
+
+
+Key Concepts
+============
+
+| Concept                    | What it does                                              |
+|----------------------------|-----------------------------------------------------------|
+| querySelectorAll()         | Finds all elements matching the CSS selector              |
+| forEach()                  | Loop through each item in a list                          |
+| addEventListener()         | Runs code when checkbox is clicked (or changes)            |
+| parentElement              | Gets the element containing the checkbox                   |
+| .replace(a, b)             | Replaces text 'a' with text 'b'                           |
+| .outerHTML                 | Gets the full HTML including the element itself           |
+| localStorage.setItem()     | Saves data to browser storage                             |
