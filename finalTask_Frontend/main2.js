@@ -7,7 +7,9 @@ let listStorage = [];
 // assist functions
 function renderList(list, index) {
         //assigning the creation of a checkbox element
-        const checkboxElement = `<input type="checkbox" onchange="syncUItoCache()" onclick="this.setAttribute('checked', this.checked)"/>`
+        const checkboxElement = `
+        <input type="checkbox" onchange="syncUItoCache()" 
+        onclick="this.checked ? this.setAttribute('checked', '') : this.removeAttribute('checked')"/>`
         return  `<div data-index="${index}">${checkboxElement}${list}</div>`;
 }
 //function added from opencode's advice
