@@ -1,0 +1,11 @@
+Your homework:
+[] complete the methods in datamanager
+[] redo: 
+    - render list
+        - add delete button
+    - addButtonClicked()
+- checkbox listener
+    - dynamic string as valid javascript onchange
+- delete button listener
+
+note: make sure the event listeners and render functions use the datamanger methods. dont access local storage directly
