@@ -4,8 +4,8 @@ const getAddButton = document.getElementById("addButton");
 const getDeleteAllButton = document.getElementById("deleteAllButton");
 const getListContainer = document.getElementById("listContainer");
 
-// -- assist functions
-//    -- render functions
+// --- assist functions
+//    --- render functions
 function renderList(list) {
     getListContainer.innerHTML = ''
   // for all items in list, get the title and checked/not
@@ -24,7 +24,7 @@ function renderList(list) {
     getListContainer.innerHTML += formattedString
   }
 }
-//    -- button functions
+//    --- button functions
 function onDeleteAllButtonClicked() {
   dataManager.deleteAll()
   console.log(dataManager.getAllItems())
@@ -43,12 +43,12 @@ function onAddButtonClicked() {
   getListField.value = ''
   renderList(dataManager.getAllItems())
 }
-// -- execution
+// --- execution
 //adds a new instance of Datamanager
 const dataManager = new Datamanager();
 renderList(dataManager.getAllItems())
 
-// -- attach listeners
+// --- attach listeners
 getAddButton.addEventListener("click", onAddButtonClicked);
 getDeleteAllButton.addEventListener("click", onDeleteAllButtonClicked);
 
