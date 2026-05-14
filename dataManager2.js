@@ -12,23 +12,20 @@ class Datamanager {
       this.cache = parsedData;
     }
   }
-  // removeListFromCache() {
-  //   // sets cache value to an empty array
-  //   // removes item from last added
-  //   this.cache.pop();
-  //   // returns the localstorage remove function
-  //   localStorage.setItem(this.key, JSON.stringify(this.cache));
-  // }
+  saveToLocalStorage() {
+    localStorage.setItem(this.key, JSON.stringify(this.cache));
+  }
 
   // todo !!! CRUD - create, read, update, delete
-  createTodoItem(object) {
+  createTodoItem(itemName) {
     // save {title, checkedBoolean}
-    if (object != null && object != undefined && object != '') {
-      const objectState = {item: object, state: false};
+    if (itemName != null && itemName != undefined && itemName != '' &&
+      itemName != itemName.trim().length > 0) {
+      const objectState = {item: itemName, state: false};
       // save the object to the cache
       this.cache.push(objectState);
       // then save the cache to localStorage
-      localStorage.setItem(this.key, JSON.stringify(this.cache));
+      this.saveToLocalStorage()
     }
   }
   getAllItems() {
@@ -39,12 +36,29 @@ class Datamanager {
     // delete the item at specified index in cache
     this.cache.splice(index, 1);
     // call save to local disc
-    localStorage.setItem(this.key, JSON.stringify(this.cache));
+    this.saveToLocalStorage()
+  }
+  deleteAll (){
+    this.cache = ''
+    localStorage.removeItem('listKey')
+
   }
   updateItem(index, newItem) {
-    // replace newitem at index
-    this.cache[index] = {item: newItem, state: false};
-    localStorage.setItem(this.key, JSON.stringify(this.cache));
+    if (this.cache[index] !== undefined && this.cache[index] !== null) {
+      const currentState = this.cache[index].state
+      // replace newitem at index
+      this.cache[index] = {item: newItem, state: currentState};
+    } else {console.error("Invalid Item")
+    }
+    this.saveToLocalStorage()
+  }
+  toggleState(index) {
+    const currentItem = this.cache[index];
+    if (currentItem) {
+      currentItem.state = !currentItem.state;
+    this.saveToLocalStorage()
+  }
+
   }
 }
 
