@@ -12,39 +12,39 @@ class Datamanager {
       this.cache = parsedData;
     }
   }
-  saveListToCache(listItem) {
-    //updates cache with listItem
-    this.cache.push(listItem);
-    //updates entire cache to local storage
-    localStorage.setItem(this.key, JSON.stringify(this.cache));
-    return;
-  }
-  loadListFromCache() {
-    return this.cache;
-  }
-  removeListFromCache() {
-    // sets cache value to an empty array
+  // removeListFromCache() {
+  //   // sets cache value to an empty array
+  //   // removes item from last added
+  //   this.cache.pop();
+  //   // returns the localstorage remove function
+  //   localStorage.setItem(this.key, JSON.stringify(this.cache));
+  // }
 
-    // removes item from last added
-    this.cache.pop();
-    // returns the localstorage remove function
-    localStorage.setItem(this.key, JSON.stringify(this.cache));
-  }
   // todo !!! CRUD - create, read, update, delete
   createTodoItem(object) {
-    // save the object to the cache
     // save {title, checkedBoolean}
-    // then save the cache to localStorage
+    if (object != null && object != undefined && object != '') {
+      const objectState = {item: object, state: false};
+      // save the object to the cache
+      this.cache.push(objectState);
+      // then save the cache to localStorage
+      localStorage.setItem(this.key, JSON.stringify(this.cache));
+    }
   }
   getAllItems() {
     // returns the cache as is
-  }
+    return this.cache || []
+  };
   deleteItem(index) {
     // delete the item at specified index in cache
+    this.cache.splice(index, 1);
     // call save to local disc
+    localStorage.setItem(this.key, JSON.stringify(this.cache));
   }
-  updateItem(index, isCompleted) {
+  updateItem(index, newItem) {
     // replace newitem at index
+    this.cache[index] = {item: newItem, state: false};
+    localStorage.setItem(this.key, JSON.stringify(this.cache));
   }
 }
 
