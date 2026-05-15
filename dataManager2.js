@@ -19,9 +19,10 @@ class Datamanager {
   // todo !!! CRUD - create, read, update, delete
   createTodoItem(itemName) {
     // save {title, checkedBoolean}
+      //manual checks for null,undefined, empty string and empty spaces
     if (itemName != null && itemName != undefined && itemName != '' &&
-      itemName != itemName.trim().length > 0) {
-      const objectState = {item: itemName, state: false};
+      itemName.trim().length > 0) {
+      const objectState = {item: itemName, state: false, isEditing: false};
       // save the object to the cache
       this.cache.push(objectState);
       // then save the cache to localStorage
@@ -39,29 +40,27 @@ class Datamanager {
     this.saveToLocalStorage()
   }
   deleteAll (){
-    this.cache = ''
+    this.cache = []
     localStorage.removeItem('listKey')
-
   }
   updateItem(index, newItem) {
     if (this.cache[index] !== undefined && this.cache[index] !== null &&
       this.cache[index] !== "") {
-      const currentState = this.cache[index].state
       // replace newitem at index
-      if (newItem){
-        console.log(newItem)
-        this.cache[index] = {item: newItem, state: currentState};
-      }
+        //using Spread Operator
+      this.cache[index] = {...this.cache[index], item: newItem};
+      this.saveToLocalStorage()
     } else {console.error("Invalid Item")
     }
-    this.saveToLocalStorage()
   }
-  toggleState(index) {
+  toggleState(index, key) {
     const currentItem = this.cache[index];
-    if (currentItem) {
-      currentItem.state = !currentItem.state;
+      //checks if currentItem has the property name in key
+    if (currentItem && currentItem.hasOwnProperty(key)) {
+      //flips the value
+      currentItem[key] = !currentItem[key];
     this.saveToLocalStorage()
-  }
+    } else {console.log(`property ${key} not found on item at index ${index}`)}
   }
 }
 

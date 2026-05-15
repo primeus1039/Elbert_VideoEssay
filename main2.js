@@ -11,51 +11,76 @@ function renderList(list) {
   // for all items in list, get the title and checked/not
   for (let index = 0; index < list.length; index++) {
     const listItems = list[index];
+    let formattedString;
     console.log(listItems)
   // create a formatted string checkbox with the parameters
-    const formattedString = `
-    <div>
-    <input type="checkbox" ${listItems.state ? 'checked' : ''} onchange="dataManager.toggleState(${index})">
-    ${listItems.item} 
-    <button onclick="onUpdateButtonClicked(${index})">Update</button> 
-    <button onclick="onDeleteButtonClicked(${index})">Delete</button>
-    </div>
-    `
+    //checks if edit field is true or false
+    if (listItems.isEditing) {
+      // listItems.isEditing == true
+        formattedString = `
+      <div class='todo-item'>
+        <input type="text" id="edit-input-${index}" value="${listItems.item}">
+        <button onclick="onUpdateButtonClicked(${index})">Update</button>
+        <button onclick="onToggleEdit(${index})">Cancel</button>
+      </div>
+      `;
+    } else {
+      // listItems.isEditing == false
+        formattedString = `
+      <div class='todo-item'>
+        <input type="checkbox" ${listItems.state ? 'checked' : ''} 
+          onchange="dataManager.toggleState(${index}, 'state')">
+      ${listItems.item} 
+      <button onclick="onToggleEdit(${index})">Update</button> 
+      <button onclick="onDeleteButtonClicked(${index})">Delete</button>
+      </div>
+      `
+    }
   // insert to html
     getListContainer.innerHTML += formattedString
   };
 };
 //    --- button functions
 function onUpdateButtonClicked(index) {
-  const newItem = getListField.value
+  const editInput = document.getElementById(`edit-input-${index}`);
+  if (!editInput) {
+    onToggleEdit(index);
+    return
+  };
+  const newItem = editInput.value;
   if (newItem.trim() != "") {
-    dataManager.updateItem(index, newItem)
-    renderList(dataManager.getAllItems())
-    getListField.value = ""
-  } else {alert("Enter Valid Item")}
-}
+    dataManager.updateItem(index, newItem);
+    dataManager.toggleState(index, 'isEditing');
+    renderList(dataManager.getAllItems());
+    getListField.value = "";
+  } else {alert("Enter Valid Item")};
+};
 function onDeleteAllButtonClicked() {
-  dataManager.deleteAll()
-  console.log(dataManager.getAllItems())
-  getListContainer.innerHTML = ''
-}
+  dataManager.deleteAll();
+  console.log(dataManager.getAllItems());
+  getListContainer.innerHTML = '';
+};
 function onDeleteButtonClicked(index){
   dataManager.deleteItem(index);
-  renderList(dataManager.getAllItems())
-}
+  renderList(dataManager.getAllItems());
+};
 function onAddButtonClicked() {
   // get the todo title
-  const fieldValue = getListField.value
-  console.log("does it work")
+  const fieldValue = getListField.value;
+  console.log("does it work");
   // call datamanager.createTodoItem({todoTitle: "your mom", check: false})
-  dataManager.createTodoItem(fieldValue)
-  getListField.value = ''
-  renderList(dataManager.getAllItems())
-}
+  dataManager.createTodoItem(fieldValue);
+  getListField.value = '';
+  renderList(dataManager.getAllItems());
+};
+function onToggleEdit(index) {
+  dataManager.toggleState(index, 'isEditing');
+  renderList(dataManager.getAllItems());
+};
 // --- execution
 //adds a new instance of Datamanager
 const dataManager = new Datamanager();
-renderList(dataManager.getAllItems())
+renderList(dataManager.getAllItems());
 
 // --- attach listeners
 getAddButton.addEventListener("click", onAddButtonClicked);
