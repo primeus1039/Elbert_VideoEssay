@@ -17,14 +17,23 @@ function renderList(list) {
     <div>
     <input type="checkbox" ${listItems.state ? 'checked' : ''} onchange="dataManager.toggleState(${index})">
     ${listItems.item} 
+    <button onclick="onUpdateButtonClicked(${index})">Update</button> 
     <button onclick="onDeleteButtonClicked(${index})">Delete</button>
     </div>
     `
   // insert to html
     getListContainer.innerHTML += formattedString
-  }
-}
+  };
+};
 //    --- button functions
+function onUpdateButtonClicked(index) {
+  const newItem = getListField.value
+  if (newItem.trim() != "") {
+    dataManager.updateItem(index, newItem)
+    renderList(dataManager.getAllItems())
+    getListField.value = ""
+  } else {alert("Enter Valid Item")}
+}
 function onDeleteAllButtonClicked() {
   dataManager.deleteAll()
   console.log(dataManager.getAllItems())

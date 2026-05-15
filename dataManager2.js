@@ -44,10 +44,14 @@ class Datamanager {
 
   }
   updateItem(index, newItem) {
-    if (this.cache[index] !== undefined && this.cache[index] !== null) {
+    if (this.cache[index] !== undefined && this.cache[index] !== null &&
+      this.cache[index] !== "") {
       const currentState = this.cache[index].state
       // replace newitem at index
-      this.cache[index] = {item: newItem, state: currentState};
+      if (newItem){
+        console.log(newItem)
+        this.cache[index] = {item: newItem, state: currentState};
+      }
     } else {console.error("Invalid Item")
     }
     this.saveToLocalStorage()
@@ -58,7 +62,6 @@ class Datamanager {
       currentItem.state = !currentItem.state;
     this.saveToLocalStorage()
   }
-
   }
 }
 
