@@ -9,3 +9,57 @@ Your homework:
 - delete button listener
 
 note: make sure the event listeners and render functions use the datamanger methods. dont access local storage directly
+
+
+Need to disect and add to notes:
+      async function main(){
+        // --- get root server ---
+        const responseRoot = await fetch("http://localhost:8000");
+        const responseRootJson = await responseRoot.json()
+        console.log(responseRootJson)
+
+        // --- get getAllTodo Method ---
+        const responseGetTodo = await fetch("http://localhost:8000/getAllTodo");
+        const responseGetTodoJson = await responseGetTodo.json()
+        console.log("Current List")
+        console.log(responseGetTodoJson)
+
+        // --- get createTodo Method ---
+        const myData = {
+          title: "from frontend",
+          checked: false
+        };
+        const responseCreateTodo = await fetch("http://localhost:8000/createTodo", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body:JSON.stringify(myData)
+        });
+        const responseCreateTodoJson = await responseCreateTodo.json();
+        console.log("Create New Entry Status")
+        console.log(responseCreateTodoJson)
+
+        // --- get deleteOneTodo Method ---
+        const deleteIndex = 0
+        const responseDeleteTodo = await fetch(`http://localhost:8000/deleteOneTodo/${deleteIndex}`,{
+          method: "DELETE"}
+        );
+        const responseDeleteTodoJson = await responseDeleteTodo.json()
+        console.log("Delete Existing Entry Status")
+        console.log(responseDeleteTodoJson)
+
+        // --- get updateOneTodo Method ---
+        const myDataUpdate = {
+          title: "from frontend",
+          checked: true
+        };
+        const updateIndex = 1
+        const responseUpdateTodo = await fetch(`http://localhost:8000/updateOneTodo/${updateIndex}`,{
+          method: "PUT",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify(myDataUpdate)
+        });
+        const responseUpdateTodoJson = await responseUpdateTodo.json();
+        console.log("Update Existing Entry Status");
+        console.log(responseUpdateTodoJson);
+      }
+      main()

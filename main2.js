@@ -29,7 +29,7 @@ function renderList(list) {
         formattedString = `
       <div class='todo-item'>
         <input type="checkbox" ${listItems.state ? 'checked' : ''} 
-          onchange="dataManager.toggleState(${index}, 'state')">
+          onchange="await dataManager.toggleState(${index}, 'state')">
       ${listItems.item} 
       <button onclick="onToggleEdit(${index})">Update</button> 
       <button onclick="onDeleteButtonClicked(${index})">Delete</button>
@@ -41,35 +41,32 @@ function renderList(list) {
   };
 };
 //    --- button functions
-function onUpdateButtonClicked(index) {
+async function onUpdateButtonClicked(index) {
   const editInput = document.getElementById(`edit-input-${index}`);
-  if (!editInput) {
-    onToggleEdit(index);
-    return
-  };
+  if (!editInput)
+    return;
+
   const newItem = editInput.value;
   if (newItem.trim() != "") {
-    dataManager.updateItem(index, newItem);
-    dataManager.toggleState(index, 'isEditing');
+    await dataManager.updateItem(index, newItem);
     renderList(dataManager.getAllItems());
     getListField.value = "";
   } else {alert("Enter Valid Item")};
 };
-function onDeleteAllButtonClicked() {
-  dataManager.deleteAll();
+async function onDeleteAllButtonClicked() {
+  await dataManager.deleteAll();
   console.log(dataManager.getAllItems());
   getListContainer.innerHTML = '';
 };
-function onDeleteButtonClicked(index){
-  dataManager.deleteItem(index);
+async function onDeleteButtonClicked(index){
+  await dataManager.deleteItem(index);
   renderList(dataManager.getAllItems());
 };
-function onAddButtonClicked() {
+async function onAddButtonClicked() {
   // get the todo title
   const fieldValue = getListField.value;
-  console.log("does it work");
   // call datamanager.createTodoItem({todoTitle: "your mom", check: false})
-  dataManager.createTodoItem(fieldValue);
+  await dataManager.createTodoItem(fieldValue);
   getListField.value = '';
   renderList(dataManager.getAllItems());
 };
@@ -77,10 +74,15 @@ function onToggleEdit(index) {
   dataManager.toggleState(index, 'isEditing');
   renderList(dataManager.getAllItems());
 };
+async function initializeProgram() {
+  await dataManager.init();
+  renderList(dataManager.getAllItems());
+}
 // --- execution
 //adds a new instance of Datamanager
-const dataManager = new Datamanager();
-renderList(dataManager.getAllItems());
+const dataManager = new DataManager();
+//need to initalize the program immediately as it needs to wait for data
+initializeProgram();
 
 // --- attach listeners
 getAddButton.addEventListener("click", onAddButtonClicked);
